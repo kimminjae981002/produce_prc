@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const path = require("path");
 // const Post = require("./schemas/post");
 // const postsRouter = require("./routes/posts");
 const connect = require("./schemas/index");
@@ -19,7 +20,7 @@ app.use(express.json());
 // 경로 '/'에서 실행
 app.get("/", async (req, res) => {
   //   const posts = await Post.find({});
-  res.send("hello world!");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // port 실행
