@@ -19,10 +19,14 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //   date: {
-  //     type: String,
-  //     require: true,
-  //   },
+  status: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    require: true,
+  },
 });
 
 module.exports = mongoose.model("Post", productSchema);

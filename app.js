@@ -7,9 +7,7 @@ const path = require("path");
 const connect = require("./schemas/index");
 connect();
 // const methodOverride = require("method-override");
-// views의 ejs 사용
-// app.set("views", path.join(__dirname, "views"));
-// app.set("view engine", "ejs");
+
 // 미들웨어 사용
 // app.use(methodOverride("_method"));
 // app.use(express.urlencoded({ extended: true }));
@@ -20,7 +18,7 @@ app.use(express.json());
 // 경로 '/'에서 실행
 app.get("/", async (req, res) => {
   //   const posts = await Post.find({});
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public/products/index.html"));
 });
 
 // port 실행
