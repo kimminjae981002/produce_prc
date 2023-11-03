@@ -10,10 +10,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  auth: {
+  author: {
     type: String,
     required: true,
-    unique: true,
   },
   content: {
     type: String,
@@ -23,10 +22,8 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: String,
-    require: true,
-  },
 });
 
-module.exports = mongoose.model("Post", productSchema);
+productSchema.set("timestamps", { createAt: true, updatedAt: false });
+
+module.exports = mongoose.model("Product", productSchema);
