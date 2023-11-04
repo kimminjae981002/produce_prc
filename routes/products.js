@@ -46,31 +46,60 @@ router.get("/products/:productId", async (req, res) => {
 });
 
 router.patch("/products/:productId", async (req, res) => {
-  const { password, title } = req.body;
-  const { productId } = req.params;
-  const product = await Product.findById({ _id: productId });
+  try {
+    const { password, title } = req.body;
+    const { productId } = req.params;
+    // const product = await Product.findById(productId);
+    const arr = await Product.find({});
+    const product = arr.filter((p) => {
+      return p._id.toString() === productId.toString();
+    });
 
-  if (password !== product.password) {
-    res.json({ message: "상품을 수정할 권한이 존재하지 않습니다." });
+    if (!product.length) {
+      return res.json({ message: "상품을 조회할 수 없습니다." });
+    }
+
+    if (password !== product[0].password) {
+      return res.json({ message: "상품을 수정할 권한이 존재하지 않습니다." });
+    }
+
+    if (password === product[0].password) {
+      await Product.findByIdAndUpdate(productId, { $set: { title: title } });
+      return res.json({ message: "상품 정보를 수정하였습니다." });
+    }
+  } catch {
+    return res.status(400).json({ message: "에러" });
   }
 
-  if (password === product.password) {
-    await Product.updateOne({ _id: productId }, { $set: { title: title } });
-    res.json({ message: "success" });
-  }
+  //   const products = Product.find({});
+  //   products.forEach((product) => {
+  //     if (product._id.toString() !== productId.toString()) {
+  //       throw error;
+  //     }
+  //   });
+  // } catch (error) {
+  //   res.status(404).json({ message: "상품을 조회할 수 없습니다." });
+  // }
 });
 
 router.delete("/products/:productId", async (req, res) => {
   const { password } = req.body;
   const { productId } = req.params;
   const product = await Product.findById(productId.toString());
-
+  const products = await Product.find({});
+  const arr = products.filter((p) => {
+    return p._id.toString() === productId.toString();
+  });
+  // 돼따>!
+  if (!arr.length) {
+    return res.json({ message: "상품이 없습니다 " });
+  }
   if (password !== product.password) {
-    res.json({ message: "상품 조회에 실패하였습니다." });
+    res.json({ message: "상품을 삭제할 권한이 존재하지 않습니다." });
   }
   if (password === product.password) {
     await Product.deleteOne({ _id: productId });
-    res.json({ message: "success" });
+    res.json({ message: "상품을 삭제하였습니다." });
   }
 });
 
