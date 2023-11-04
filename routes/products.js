@@ -85,19 +85,19 @@ router.patch("/products/:productId", async (req, res) => {
 router.delete("/products/:productId", async (req, res) => {
   const { password } = req.body;
   const { productId } = req.params;
-  const product = await Product.findById(productId.toString());
   const products = await Product.find({});
   const arr = products.filter((p) => {
     return p._id.toString() === productId.toString();
   });
   // 돼따>!
+
   if (!arr.length) {
     return res.json({ message: "상품이 없습니다 " });
   }
-  if (password !== product.password) {
+  if (password !== products[0].password) {
     res.json({ message: "상품을 삭제할 권한이 존재하지 않습니다." });
   }
-  if (password === product.password) {
+  if (password === products[0].password) {
     await Product.deleteOne({ _id: productId });
     res.json({ message: "상품을 삭제하였습니다." });
   }
