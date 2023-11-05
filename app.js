@@ -17,6 +17,10 @@ app.use(express.json());
 // postRouter를 실행한다.
 app.use("/api", [productsRouter]);
 
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
 // port 실행
 app.listen(port, () => {
   console.log(port, "포트로 서버가 열렸어요!");
