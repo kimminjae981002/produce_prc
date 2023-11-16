@@ -47,7 +47,7 @@ router.get("/products/:productId", async (req, res) => {
 
 router.patch("/products/:productId", async (req, res) => {
   try {
-    const { password, title } = req.body;
+    const { password, title, content } = req.body;
     const { productId } = req.params;
     // const product = await Product.findById(productId);
     const arr = await Product.find({});
@@ -64,7 +64,12 @@ router.patch("/products/:productId", async (req, res) => {
     }
 
     if (password === product[0].password) {
-      await Product.findByIdAndUpdate(productId, { $set: { title: title } });
+      await Product.findByIdAndUpdate(productId, {
+        $set: {
+          title: title,
+          content: content,
+        },
+      });
       return res.json({ message: "상품 정보를 수정하였습니다." });
     }
   } catch {
